@@ -1,5 +1,4 @@
 import numpy as np
-from collections import Counter
 def part1(filename): 
     f = open(filename, 'r')
     lines = f.read().splitlines()
