@@ -68,11 +68,6 @@ def part2(filename):
         if check_loop(s):
             count += 1
     print(count)
-        
-    
-        
-    
-    
           
 part1('sample')
 part1('input')
