@@ -1,4 +1,5 @@
-import queue
+from itertools import product
+from operator import add, mul
 def part1(filename): 
     f = open(filename, 'r')
     lines = f.read().splitlines()
@@ -7,27 +8,19 @@ def part1(filename):
         val, l = l.split(': ')
         val = int(val)
         nums = [int(n) for n in l.split()]
-        running_totals = queue.Queue()
-        running_totals.put(nums[0])
-        for i, n in enumerate(nums):
-            if i == 0: continue
-            q_len = running_totals.qsize()
-            for j in range(q_len):
-                t = running_totals.get()
-                t1 = t+n
-                t2 = t*n
-                if t1 <= val:
-                    running_totals.put(t1)
-                if t2 <= val:
-                    running_totals.put(t2)
-        if val in running_totals.queue:
-            ans += val
+        for p in product([add, mul], repeat=len(nums)-1):
+            rtotal = nums[0]
+            for n in range(1, len(nums)):
+                rtotal = p[n-1](rtotal, nums[n])
+                if rtotal > val: break
+            if rtotal == val:
+                ans += val
+                break
     print(ans)
         
 
 def part2(filename): 
-    f = open(filename, 'r')
-    lines = f.read().splitlines()
+    def concat(a, b): return int(str(a)+str(b))
     f = open(filename, 'r')
     lines = f.read().splitlines()
     ans = 0
@@ -35,24 +28,14 @@ def part2(filename):
         val, l = l.split(': ')
         val = int(val)
         nums = [int(n) for n in l.split()]
-        running_totals = queue.Queue()
-        running_totals.put(nums[0])
-        for i, n in enumerate(nums):
-            if i == 0: continue
-            q_len = running_totals.qsize()
-            for j in range(q_len):
-                t = running_totals.get()
-                t1 = t+n
-                t2 = t*n
-                t3 = int(str(t) + str(n))
-                if t1 <= val:
-                    running_totals.put(t1)
-                if t2 <= val:
-                    running_totals.put(t2)
-                if t3 <= val:
-                    running_totals.put(t3)
-        if val in running_totals.queue:
-            ans += val
+        for p in product([add, mul, concat], repeat=len(nums)-1):
+            rtotal = nums[0]
+            for n in range(1, len(nums)):
+                rtotal = p[n-1](rtotal, nums[n])
+                if rtotal > val: break
+            if rtotal == val:
+                ans += val
+                break
     print(ans)
 
 part1('sample')
