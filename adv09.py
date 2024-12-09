@@ -1,4 +1,3 @@
-from copy import deepcopy
 def part1(filename): 
     f = open(filename, 'r')
     line = f.read().strip()
