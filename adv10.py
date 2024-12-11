@@ -19,9 +19,6 @@ def part1(filename):
     for h in heads:
         ans += len(set(search(h)))
     print(ans)
-        
-            
- 
 
 def part2(filename): 
     f = open(filename, 'r')
